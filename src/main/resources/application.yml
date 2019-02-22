@@ -1,0 +1,31 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+server:
+  port: 8100
+spring:
+  application:
+    name: service-zuul
+zuul:
+  host:
+    connect-timeout-millis: 10000 #Hystrix Readed time out
+    socket-timeout-millis: 60000 #Hystrix Readed time out
+  routes:
+    api-a: 
+      path: /weather/**
+      serviceId: service-ribbon #对应服务名
+      strip-prefix: false #转发请求不去掉前缀，默认去掉
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000 #Hystrix Readed time out
+ribbon:
+  ReadTimeout: 60000 #Hystrix Readed time out
+  ConnectTimeout: 60000 #Hystrix Readed time out
